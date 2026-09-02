@@ -11,6 +11,7 @@ struct item{
 struct ContentView: View{
     @State var task=""
     @State var itemList:[item] = [item(name: "Study Swift", completed: false, important: false), item(name: "Complete Assignment", completed: false, important: false)]
+    @State var ind: Int?
     var body: some View {
         
         Text("To Do List")
@@ -52,6 +53,25 @@ struct ContentView: View{
 //                        Image(systemName: itemList[index].completed ? "checkmark.circle":"circle")
                     }
                     Text(itemList[index].name)
+                    if(itemList[index].important){
+                        Image(systemName: "star.fill")
+                    }
+                }
+                .swipeActions(edge : .leading){
+                    Button{
+                        itemList[index].important.toggle()
+                    } label: {
+                        Text("mark Important")
+                    }
+                }
+                .swipeActions(edge: .trailing){
+                    Button{
+                        ind=index
+                        removeTask()
+                    } label:{
+                        Text("Delete")
+                    }
+                    .tint(.red)
                 }
             }
         }
@@ -63,6 +83,12 @@ struct ContentView: View{
             itemList.append(item(name: task, completed: false, important: false))
             task=""
         }
+    }
+    func removeTask(){
+        if let ind{
+            itemList.remove(at: ind)
+        }
+        ind = nil
     }
 }
 
