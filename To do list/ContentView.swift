@@ -1,91 +1,89 @@
-
 import SwiftUI
 
 struct item{
-    var name:String
-    var completed:Bool
-    var important: Bool
+  var name:String
+  var completed:Bool
+  var important:Bool
 }
-
-
 struct ContentView: View{
     @State var task=""
-    @State var itemList:[item] = [item(name: "Study Swift", completed: false, important: false), item(name: "Complete Assignment", completed: false, important: false)]
+    @State var itemList:[item] = [item(name: "Sleep", completed: false, important: false), item(name: "work", completed: false, important: false), item(name: "eat", completed: false, important: false)]
     @State var ind: Int?
     var body: some View {
-        NavigationStack{
+        Text("To Do List")
+            .font(.largeTitle) //modifier.
+            .fontWeight(.bold)
+            .padding()
+            .foregroundStyle(.orange)
+        HStack{
+            TextField("Add a new task...", text : $task, prompt: Text("Add a new task...").foregroundStyle(.gray))
+                .frame(width: 300,height: 20)
+                .padding(10)
+                .background(.thinMaterial)
+                .foregroundStyle(.black)
+                .clipShape(.rect(cornerRadius: 20))
             
-            Text("To Do List")
-                .font(.largeTitle)
-                .fontWeight(.bold)
-                .foregroundStyle(.blue)
-            HStack{
-                TextField("Enter New task", text: $task, prompt: Text("Enter the task").foregroundStyle(.black))
-                    .frame(width: 300, height: 30)
-                    .padding(10)
-                    .background(.thinMaterial)
-                    .foregroundStyle(.black)
-                    .clipShape(.rect(cornerRadius: 30))
-                
-                Button(){
-                    addTask()
-                } label: {
-                    Text("+")
-                        .font(.title2)
-                        .padding(20)
-                        .background(.blue)
-                        .foregroundStyle(.white)
-                        .clipShape(.circle)
-                }
+            Button{
+                addTask()
+            } label: {
+                Text("+")
+                    .padding(13)
+                    .background(.brown)
+                    .foregroundStyle(.white)
+                    .clipShape(.circle)
+//                .buttonStyle(.borderedProminent) //inverts colours of text and border
             }
-            List{
-                ForEach(itemList.indices, id: \.self){ index in
-                    HStack{
-                        //                    Image(systemName: "circle")
-                        Button{
-                            itemList[index].completed.toggle()
-                        } label: {
-                            if(itemList[index].completed){
+            
+        }
+        List{
+            ForEach(itemList.indices, id: \.self){index in
+                HStack{
+//                    Image(systemName: "circle")
+                    Button{
+                        itemList[index].completed.toggle()
+                    } label: {
+//                        Image(systemName: itemList[index].completed ? "circle" : "checkmark.circle")
+                        if(itemList[index].important){
+                            if (itemList[index].completed){
+                                Image(systemName: "star.fill")
+                            }
+                            else{
+                                Image(systemName: "star")
+                            }
+                        }
+                        else{
+                            if (itemList[index].completed){
                                 Image(systemName: "checkmark.circle")
                             }
                             else{
                                 Image(systemName: "circle")
                             }
-                            //                        Image(systemName: itemList[index].completed ? "checkmark.circle":"circle")
-                        }
-                        Text(itemList[index].name)
-                        if(itemList[index].important){
-                            Image(systemName: "star.fill")
                         }
                     }
-                    .swipeActions(edge : .leading){
-                        Button{
-                            itemList[index].important.toggle()
-                        } label: {
-                            Text("mark Important")
-                        }
-                    }
-                    .swipeActions(edge: .trailing){
-                        Button{
-                            ind=index
-                            removeTask()
-                        } label:{
-                            Text("Delete")
-                        }
-                        .tint(.red)
+                    Text(itemList[index].name)
+//                    if(itemList[index].important){
+//                        Image(systemName: "star.fill")
+//                    }
+                }
+                .swipeActions(edge: .leading){
+                    Button{
+                        itemList[index].important.toggle()
+                    }label: {
+                        Text("mark important")
                     }
                 }
-            }
-            .listStyle(.plain)
-            NavigationLink{
-                settingView()
-            } label: {
-                Image(systemName: "gear")
-                
+                .swipeActions(edge: .trailing){
+                    Button{
+                        ind=index
+                        removeTask()
+                    } label: {
+                        Text("Delete")
+                    }.tint(.red)
+                }
             }
         }
+        .listStyle(.plain)
     }
-    
     func addTask(){
         if(!task.isEmpty){
             itemList.append(item(name: task, completed: false, important: false))
@@ -99,7 +97,6 @@ struct ContentView: View{
         ind = nil
     }
 }
-
 #Preview {
     ContentView()
 }
