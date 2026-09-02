@@ -1,15 +1,48 @@
-//
-//  settingView.swift
-//  To do list
-//
-//  Created by Kartik on 02-09-2026.
-//
 
 import SwiftUI
 
 struct settingView: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationStack{
+            Text("Settings")
+                .font(.largeTitle) //modifier.
+                .fontWeight(.bold)
+                .padding()
+                .foregroundStyle(.brown)
+            List{
+                
+                HStack{
+                    //                    Image(systemName: "circle")
+                    Button{
+                        
+                    } label: {
+                        Image(systemName: "circle.lefthalf.filled")
+                    }
+                    Text("Dark Mode")
+                    //                    if(itemList[index].important){
+                    //                        Image(systemName: "star.fill")
+                    //                    }
+                }
+                HStack{
+                    //                    Image(systemName: "circle")
+                    Button{
+                        
+                    } label: {
+                        Image(systemName: "plus")
+                    }
+                    Text("Create Category")
+                    //                    if(itemList[index].important){
+                    //                        Image(systemName: "star.fill")
+                    //                    }
+                }
+            }
+            .listStyle(.grouped)
+            NavigationLink{
+                ContentView()
+            } label: {
+                Image(systemName: "house")
+            }
+        }
     }
 }
 
